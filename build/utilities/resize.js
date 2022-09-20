@@ -62,7 +62,9 @@ var resize = function (ThumbnailName, FileName, height, width, TDir) { return __
                         }
                     });
                 }); };
-                thumbImage();
+                return [4 /*yield*/, thumbImage()];
+            case 3:
+                _a.sent();
                 return [2 /*return*/];
         }
     });

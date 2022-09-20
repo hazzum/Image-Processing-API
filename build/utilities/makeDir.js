@@ -60,7 +60,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = __importDefault(require("path"));
 var fs_1 = __importStar(require("fs"));
-var makeDir = function (TDir, TName) { return __awaiter(void 0, void 0, void 0, function () {
+var makeDir = function (TDir) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
