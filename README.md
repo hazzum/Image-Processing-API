@@ -16,7 +16,7 @@ There's only one endpoint `/api/view` whose route takes the following form:
 
    **Required:**
 
-   `filename=[alphanumeric]`
+   `filename=[string]`
 
    **Optional:**
 
