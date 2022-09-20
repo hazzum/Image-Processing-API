@@ -2,6 +2,7 @@ import express from 'express'
 import resize from './utilities/resize'
 import makeDir from './utilities/makeDir'
 import writethumbImage from './utilities/writeThumbImage'
+import checkIfExists from './utilities/checkIfExists'
 import path from 'path'
 import Joi from 'joi'
 import { promises as fs } from 'fs'
@@ -18,7 +19,7 @@ const options = {
 
 const view = express.Router()
 
-view.get('/', async (req: express.Request, res: express.Response) => {
+view.get('/', async (req: express.Request, res: express.Response, next: Function) => {
   //validate inputs
   const width = req.query.width ? (req.query.width as unknown as string) : '200'
   const height = req.query.height ? (req.query.height as unknown as string) : '200'
@@ -31,16 +32,15 @@ view.get('/', async (req: express.Request, res: express.Response) => {
   const imageName = req.query.filename + '.jpg'
   const thumbnailName =
     ((((req.query.filename + '_' + width) as string) + '_' + height) as string) + '.jpg'
-
   //check if file exists
-  const fileNames = await fs.readdir(path.join(imageDir))
-  if (!fileNames.includes(imageName)) {
+  const exists = await checkIfExists(imageDir, imageName)
+  if (!exists) {
     res.status(404).send('Error 404: image does not exist on the server')
     return
   }
-  //make thumbnail directory if it doesn't exist already
+  //make thumbnail directory if it doesn't already exist 
   await makeDir(thumbnailDir)
-  //load list of existing file in the directory and check if the required file already exists
+  //load list of existing file names in the directory and check if the required file already exists
   const thumbnailNames = await fs.readdir(path.join(thumbnailDir))
   if (thumbnailNames.includes(thumbnailName)) {
     res.sendFile(thumbnailName, options)

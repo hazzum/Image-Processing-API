@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import express from 'express'
 import morgan from 'morgan'
 import routes from './routes/index'
 import path from 'path'
-
 const PORT = 5000
 
 // create an instance server

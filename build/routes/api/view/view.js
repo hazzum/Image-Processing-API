@@ -43,6 +43,7 @@ var express_1 = __importDefault(require("express"));
 var resize_1 = __importDefault(require("./utilities/resize"));
 var makeDir_1 = __importDefault(require("./utilities/makeDir"));
 var writeThumbImage_1 = __importDefault(require("./utilities/writeThumbImage"));
+var checkIfExists_1 = __importDefault(require("./utilities/checkIfExists"));
 var path_1 = __importDefault(require("path"));
 var joi_1 = __importDefault(require("joi"));
 var fs_1 = require("fs");
@@ -56,8 +57,8 @@ var options = {
     root: path_1.default.join(thumbnailDir)
 };
 var view = express_1.default.Router();
-view.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var width, height, error, imageName, thumbnailName, fileNames, thumbnailNames, output;
+view.get('/', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var width, height, error, imageName, thumbnailName, exists, thumbnailNames, output;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -70,19 +71,19 @@ view.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 }
                 imageName = req.query.filename + '.jpg';
                 thumbnailName = ((req.query.filename + '_' + width) + '_' + height) + '.jpg';
-                return [4 /*yield*/, fs_1.promises.readdir(path_1.default.join(imageDir))];
+                return [4 /*yield*/, (0, checkIfExists_1.default)(imageDir, imageName)];
             case 1:
-                fileNames = _a.sent();
-                if (!fileNames.includes(imageName)) {
+                exists = _a.sent();
+                if (!exists) {
                     res.status(404).send('Error 404: image does not exist on the server');
                     return [2 /*return*/];
                 }
-                //make thumbnail directory if it doesn't exist already
+                //make thumbnail directory if it doesn't already exist 
                 return [4 /*yield*/, (0, makeDir_1.default)(thumbnailDir)
-                    //load list of existing file in the directory and check if the required file already exists
+                    //load list of existing file names in the directory and check if the required file already exists
                 ];
             case 2:
-                //make thumbnail directory if it doesn't exist already
+                //make thumbnail directory if it doesn't already exist 
                 _a.sent();
                 return [4 /*yield*/, fs_1.promises.readdir(path_1.default.join(thumbnailDir))];
             case 3:
