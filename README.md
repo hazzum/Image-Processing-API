@@ -6,7 +6,7 @@ There's only one endpoint `/api/view` whose route takes the following form:
 
 * **URL**
 
-  <_/api/view?filename=[file_name_excluding_extension]&height=[height_in_pixel_(optional)&width=[width_in_pixel_(optional)]_>
+  <_/api/view?filename=[file_name_excluding_extension]&height=[height_in_pixel_(optional)]&width=[width_in_pixel_(optional)]_>
 
 * **Method:**
   
