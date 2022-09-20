@@ -20,7 +20,7 @@ There's only one endpoint `/api/view` whose route takes the following form:
 
    **Optional:**
 
-   `width=[number]` default value `=200`
+   `width=[number]` default value `=200` <br />
    `height=[number]` default value `=200`
 
 * **Success Response:**
