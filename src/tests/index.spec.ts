@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import checkIfExists from '../routes/api/view/utilities/checkIfExists'
-import * as resize from '../routes/api/view/utilities/resize'
+import resize from '../routes/api/view/utilities/resize'
 import app from '../index'
 
 // create a request object
@@ -17,6 +17,21 @@ describe('Test if image exists', () => {
   it('Check if checkIfExists function returns true upon sending a pre-existing image', async () => {
     const response = await checkIfExists('./src/assets/images', 'fjord.jpg')
     expect(response).toBe(true)
+  })
+})
+
+describe('Test image processing', () => {
+  it('Check if resize function is defined', () => {
+    expect(resize).toBeDefined()
+  })
+  it('Check if resize function returns a resized image upon sending a pre-existent image', async () => {
+    const response = await resize('fjord.jpg', 300, 300, './src/assets/images')
+    expect(response).toBeInstanceOf(Buffer)
+  })
+  it('Check if resize function throws an error upon sending a non-existent image', async () => {
+    await resize('johncena.jpg', 300, 300, './src/assets/images').catch((error)=>{
+      expect(error.code).toBe('ENOENT')
+    })
   })
 })
 
@@ -54,7 +69,6 @@ describe('Test endpoint response', () => {
     expect(response.status).toBe(404)
   })
 })
-
 
 describe('Test error handling', () => {
   it('sending bad parameters', async () => {

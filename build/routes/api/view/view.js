@@ -57,7 +57,7 @@ var options = {
     root: path_1.default.join(thumbnailDir)
 };
 var view = express_1.default.Router();
-view.get('/', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+view.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var width, height, error, imageName, thumbnailName, exists, thumbnailNames, output;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -83,12 +83,12 @@ view.get('/', function (req, res, next) { return __awaiter(void 0, void 0, void 
                     res.status(404).send('Error 404: image does not exist on the server');
                     return [2 /*return*/];
                 }
-                //make thumbnail directory if it doesn't already exist 
+                //make thumbnail directory if it doesn't already exist
                 return [4 /*yield*/, (0, makeDir_1.default)(thumbnailDir)
                     //load list of existing file names in the directory and check if the required file already exists
                 ];
             case 2:
-                //make thumbnail directory if it doesn't already exist 
+                //make thumbnail directory if it doesn't already exist
                 _a.sent();
                 return [4 /*yield*/, fs_1.promises.readdir(path_1.default.join(thumbnailDir))];
             case 3:

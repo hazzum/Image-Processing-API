@@ -1,6 +1,9 @@
 # Image-Processing-API
 Image processing API project for Udacity's advanced web track
 
+# Application URL
+`http://localhost:5000`
+
 # Testing Endpoints
 There's only one endpoint `/api/view` whose route takes the following form:
 

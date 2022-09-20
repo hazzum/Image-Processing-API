@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var checkIfExists_1 = __importDefault(require("../routes/api/view/utilities/checkIfExists"));
+var resize_1 = __importDefault(require("../routes/api/view/utilities/resize"));
 var index_1 = __importDefault(require("../index"));
 // create a request object
 var request = (0, supertest_1.default)(index_1.default);
@@ -68,6 +69,35 @@ describe('Test if image exists', function () {
                 case 1:
                     response = _a.sent();
                     expect(response).toBe(true);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe('Test image processing', function () {
+    it('Check if resize function is defined', function () {
+        expect(resize_1.default).toBeDefined();
+    });
+    it('Check if resize function returns a resized image upon sending a pre-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, resize_1.default)('fjord.jpg', 300, 300, './src/assets/images')];
+                case 1:
+                    response = _a.sent();
+                    expect(response).toBeInstanceOf(Buffer);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('Check if resize function throws an error upon sending a non-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, resize_1.default)('johncena.jpg', 300, 300, './src/assets/images').catch(function (error) {
+                        expect(error.code).toBe('ENOENT');
+                    })];
+                case 1:
+                    _a.sent();
                     return [2 /*return*/];
             }
         });

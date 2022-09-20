@@ -19,7 +19,7 @@ const options = {
 
 const view = express.Router()
 
-view.get('/', async (req: express.Request, res: express.Response, next: Function) => {
+view.get('/', async (req: express.Request, res: express.Response) => {
   //validate inputs
   if (!req.query.filename) {
     res.status(400).send('Error 400: no filename was sent')
@@ -42,7 +42,7 @@ view.get('/', async (req: express.Request, res: express.Response, next: Function
     res.status(404).send('Error 404: image does not exist on the server')
     return
   }
-  //make thumbnail directory if it doesn't already exist 
+  //make thumbnail directory if it doesn't already exist
   await makeDir(thumbnailDir)
   //load list of existing file names in the directory and check if the required file already exists
   const thumbnailNames = await fs.readdir(path.join(thumbnailDir))
@@ -51,12 +51,7 @@ view.get('/', async (req: express.Request, res: express.Response, next: Function
     return
   } else {
     //resize image and save it to a buffer
-    const output = await resize(
-      imageName,
-      parseInt(height),
-      parseInt(width),
-      imageDir
-    )
+    const output = await resize(imageName, parseInt(height), parseInt(width), imageDir)
     //save the thumbnail
     await writethumbImage(thumbnailDir, thumbnailName, output)
     res.sendFile(thumbnailName, options)
