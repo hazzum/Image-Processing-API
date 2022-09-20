@@ -21,6 +21,10 @@ const view = express.Router()
 
 view.get('/', async (req: express.Request, res: express.Response, next: Function) => {
   //validate inputs
+  if (!req.query.filename) {
+    res.status(400).send('Error 400: no filename was sent')
+    return
+  }
   const width = req.query.width ? (req.query.width as unknown as string) : '200'
   const height = req.query.height ? (req.query.height as unknown as string) : '200'
   const { error } = dimensionSchema.validate({ width: width, height: height })

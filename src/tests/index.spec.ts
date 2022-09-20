@@ -1,5 +1,6 @@
 import supertest from 'supertest'
 import checkIfExists from '../routes/api/view/utilities/checkIfExists'
+import * as resize from '../routes/api/view/utilities/resize'
 import app from '../index'
 
 // create a request object
@@ -61,30 +62,13 @@ describe('Test error handling', () => {
     expect(response.status).toBe(400)
   })
 
-  it('requesting a non-existing image', async () => {
+  it('requesting a non-existing image returns a 404 error', async () => {
     const response = await request.get('/api/view?filename=johncena&width=300&height=400')
     expect(response.status).toBe(404)
   })
 
-  it('not sending a file name', async () => {
+  it('not sending a file name returns 400 error', async () => {
     const response = await request.get('/api/view?width=300&height=400')
-    expect(response.status).toBe(404)
-  })
-})
-
-describe('Test image processing', () => {
-  it('sending bad parameters', async () => {
-    const response = await request.get('/api/view?filename=encenadaport&width=70d0&height=800')
     expect(response.status).toBe(400)
-  })
-
-  it('requesting a non-existing image', async () => {
-    const response = await request.get('/api/view?filename=johncena&width=300&height=400')
-    expect(response.status).toBe(404)
-  })
-
-  it('not sending file name', async () => {
-    const response = await request.get('/api/view?width=300&height=400')
-    expect(response.status).toBe(404)
   })
 })

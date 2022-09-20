@@ -73,44 +73,6 @@ describe('Test if image exists', function () {
         });
     }); });
 });
-describe('Test error handling', function () {
-    it('sending bad parameters', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?filename=encenadaport&width=70d0&height=800')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(400);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('requesting a non-existing image', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?filename=johncena&width=300&height=400')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(404);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('not sending file name', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?width=300&height=400')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(404);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-});
 describe('Test endpoint response', function () {
     it('#1 Test view endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
@@ -192,6 +154,44 @@ describe('Test endpoint response', function () {
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(404);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe('Test error handling', function () {
+    it('sending bad parameters', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/view?filename=encenadaport&width=70d0&height=800')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('requesting a non-existing image returns a 404 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/view?filename=johncena&width=300&height=400')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(404);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('not sending a file name returns 400 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/view?width=300&height=400')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
                     return [2 /*return*/];
             }
         });

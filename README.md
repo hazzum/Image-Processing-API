@@ -30,9 +30,11 @@ There's only one endpoint `/api/view` whose route takes the following form:
 
 * **Error Response:**
 
-  * **Code:** 404 NOT FOUND <br />
+  * **Code:** 404 <br />
     **Content:** `{ error : "Error 404: image does not exist on the server" }`
 
-  * **Code:** 400 BAD REQUEST <br />
+  * **Code:** 400 <br />
     **Content:** `{ error : "Error 400: "width/height" with value [bad value] fails to match the required pattern: /^[0-9]+$/" }`  
 
+  * **Code:** 400 <br />
+    **Content:** `{ error : "Error 400: no filename was sent" }`

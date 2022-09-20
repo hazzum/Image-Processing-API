@@ -62,6 +62,11 @@ view.get('/', function (req, res, next) { return __awaiter(void 0, void 0, void 
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                //validate inputs
+                if (!req.query.filename) {
+                    res.status(400).send('Error 400: no filename was sent');
+                    return [2 /*return*/];
+                }
                 width = req.query.width ? req.query.width : '200';
                 height = req.query.height ? req.query.height : '200';
                 error = dimensionSchema.validate({ width: width, height: height }).error;
