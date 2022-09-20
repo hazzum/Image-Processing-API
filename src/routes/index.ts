@@ -1,5 +1,5 @@
 import express from 'express'
-import view from './api/view'
+import view from './api/view/view'
 const routes = express.Router()
 routes.use('/view', view)
 routes.get('/', (req, res) => {

@@ -39,45 +39,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var index_1 = __importDefault(require("../index"));
-// create a request object
-var request = (0, supertest_1.default)(index_1.default);
-describe('Test endpoint response', function () {
-    it('Test view endpoint #1', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?filename=fjord')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('Test view endpoint#2', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?filename=fjord&width=300&height=500')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('Test view endpoint#2', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?filename=fjord&width=300&height=500')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-});
+var fs_1 = require("fs");
+var path_1 = __importDefault(require("path"));
+var sharp_1 = __importDefault(require("sharp"));
+var resize = function (FileName, height, width, imageDir) { return __awaiter(void 0, void 0, void 0, function () {
+    var file, image;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, fs_1.promises.readFile(path_1.default.join(imageDir, FileName))];
+            case 1:
+                file = _a.sent();
+                return [4 /*yield*/, (0, sharp_1.default)(file).resize(width, height).toBuffer()];
+            case 2:
+                image = _a.sent();
+                return [2 /*return*/, image];
+        }
+    });
+}); };
+exports.default = resize;
