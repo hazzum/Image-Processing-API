@@ -4,7 +4,7 @@ Image processing API project for Udacity's advanced web track
 # Application URL
 `http://localhost:5000`
 
-# Working scripts:
+* **Working scripts:**
     `npm run build`
     `npm run dev`
     `npm run start`
