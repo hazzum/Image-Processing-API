@@ -8,7 +8,7 @@ const resize = async (
   imageDir: string
 ): Promise<Buffer> => {
   const file: Buffer = await fs.readFile(imageDir + FileName)
-  const image: Buffer = await sharp(file).resize(width, height).toBuffer()
+  const image: Buffer = await sharp(file).resize(width, height).greyscale().toBuffer()
   return image
 }
 

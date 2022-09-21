@@ -40,13 +40,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
-var path_1 = __importDefault(require("path"));
 var sharp_1 = __importDefault(require("sharp"));
 var resize = function (FileName, height, width, imageDir) { return __awaiter(void 0, void 0, void 0, function () {
     var file, image;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, fs_1.promises.readFile(path_1.default.join(imageDir, FileName))];
+            case 0: return [4 /*yield*/, fs_1.promises.readFile(imageDir + FileName)];
             case 1:
                 file = _a.sent();
                 return [4 /*yield*/, (0, sharp_1.default)(file).resize(width, height).toBuffer()];

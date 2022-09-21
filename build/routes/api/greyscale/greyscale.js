@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var resize_1 = __importDefault(require("./utilities/resize"));
+var greyscale_1 = __importDefault(require("./utilities/greyscale"));
 var makeDir_1 = __importDefault(require("../commonUtils/makeDir"));
 var saveEditedImage_1 = __importDefault(require("../commonUtils/saveEditedImage"));
 var checkIfExists_1 = __importDefault(require("../commonUtils/checkIfExists"));
@@ -51,14 +51,14 @@ var dimensionSchema = joi_1.default.object({
     width: joi_1.default.string().regex(/^[0-9]+$/),
     height: joi_1.default.string().regex(/^[0-9]+$/)
 });
-var thumbnailDir = path_1.default.join('./public/assets/images/thumbnails/');
+var outputDirectory = path_1.default.join('./public/assets/images/greyscale/');
 var imageDir = path_1.default.join('./public/assets/images/');
 var options = {
-    root: thumbnailDir
+    root: outputDirectory
 };
-var view = express_1.default.Router();
-view.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var width, height, error, imageName, thumbnailName, exists, thumbnailNames, output;
+var greyscale = express_1.default.Router();
+greyscale.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var width, height, error, imageName, outputFileName, exists, outputNames, output;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -75,7 +75,7 @@ view.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                     return [2 /*return*/];
                 }
                 imageName = req.query.filename + '.jpg';
-                thumbnailName = req.query.filename + '_' + width + '_' + height + '.jpg';
+                outputFileName = req.query.filename + '_' + width + '_' + height + '.jpg';
                 return [4 /*yield*/, (0, checkIfExists_1.default)(imageDir, imageName)];
             case 1:
                 exists = _a.sent();
@@ -83,41 +83,41 @@ view.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                     res.status(404).send('Error 404: image does not exist on the server');
                     return [2 /*return*/];
                 }
-                //make thumbnail directory if it doesn't already exist
-                return [4 /*yield*/, (0, makeDir_1.default)(thumbnailDir).catch(function () {
+                //make output directory for edited images if it doesn't already exist
+                return [4 /*yield*/, (0, makeDir_1.default)(outputDirectory).catch(function () {
                         res.status(500).send('Error 500: internal server error');
                         return;
                     })
                     //load list of existing file names in the directory and check if the required file already exists
                 ];
             case 2:
-                //make thumbnail directory if it doesn't already exist
+                //make output directory for edited images if it doesn't already exist
                 _a.sent();
-                return [4 /*yield*/, fs_1.promises.readdir(thumbnailDir)];
+                return [4 /*yield*/, fs_1.promises.readdir(outputDirectory)];
             case 3:
-                thumbnailNames = _a.sent();
-                if (!thumbnailNames.includes(thumbnailName)) return [3 /*break*/, 4];
-                res.sendFile(thumbnailName, options);
+                outputNames = _a.sent();
+                if (!outputNames.includes(outputFileName)) return [3 /*break*/, 4];
+                res.sendFile(outputFileName, options);
                 return [2 /*return*/];
-            case 4: return [4 /*yield*/, (0, resize_1.default)(imageName, parseInt(height), parseInt(width), imageDir).catch(function () {
+            case 4: return [4 /*yield*/, (0, greyscale_1.default)(imageName, parseInt(height), parseInt(width), imageDir).catch(function () {
                     res.status(500).send('Error 500: could not process image');
                     return Buffer.alloc(0);
                 })
-                //save the thumbnail
+                //save the greyscale image
             ];
             case 5:
                 output = _a.sent();
-                //save the thumbnail
-                return [4 /*yield*/, (0, saveEditedImage_1.default)(thumbnailDir, thumbnailName, output).catch(function () {
-                        res.status(500).send('Error 500: could not save thumbnail');
+                //save the greyscale image
+                return [4 /*yield*/, (0, saveEditedImage_1.default)(outputDirectory, outputFileName, output).catch(function () {
+                        res.status(500).send('Error 500: could not save the greyscale image');
                         return;
                     })];
             case 6:
-                //save the thumbnail
+                //save the greyscale image
                 _a.sent();
-                res.sendFile(thumbnailName, options);
+                res.sendFile(outputFileName, options);
                 return [2 /*return*/];
         }
     });
 }); });
-exports.default = view;
+exports.default = greyscale;

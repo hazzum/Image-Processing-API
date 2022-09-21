@@ -40,9 +40,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
-var checkIfExists_1 = __importDefault(require("../routes/api/view/utilities/checkIfExists"));
+var checkIfExists_1 = __importDefault(require("../routes/api/commonUtils/checkIfExists"));
 var resize_1 = __importDefault(require("../routes/api/view/utilities/resize"));
+var greyscale_1 = __importDefault(require("../routes/api/greyscale/utilities/greyscale"));
 var index_1 = __importDefault(require("../index"));
+var path_1 = __importDefault(require("path"));
 // create a request object
 var request = (0, supertest_1.default)(index_1.default);
 describe('Test if image exists', function () {
@@ -53,7 +55,7 @@ describe('Test if image exists', function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, checkIfExists_1.default)('./src/assets/images', 'image.jpg')];
+                case 0: return [4 /*yield*/, (0, checkIfExists_1.default)(path_1.default.join('./public/assets/images/'), 'image.jpg')];
                 case 1:
                     response = _a.sent();
                     expect(response).toBe(false);
@@ -65,7 +67,7 @@ describe('Test if image exists', function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, checkIfExists_1.default)('./src/assets/images', 'fjord.jpg')];
+                case 0: return [4 /*yield*/, (0, checkIfExists_1.default)(path_1.default.join('./public/assets/images/'), 'fjord.jpg')];
                 case 1:
                     response = _a.sent();
                     expect(response).toBe(true);
@@ -74,15 +76,15 @@ describe('Test if image exists', function () {
         });
     }); });
 });
-describe('Test image processing', function () {
-    it('Check if resize function is defined', function () {
+describe('Test image processing function resize()', function () {
+    it('Check if resize() function is defined', function () {
         expect(resize_1.default).toBeDefined();
     });
     it('Check if resize function returns a resized image upon sending a pre-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, resize_1.default)('fjord.jpg', 300, 300, './src/assets/images')];
+                case 0: return [4 /*yield*/, (0, resize_1.default)('fjord.jpg', 300, 300, path_1.default.join('./public/assets/images/'))];
                 case 1:
                     response = _a.sent();
                     expect(response).toBeInstanceOf(Buffer);
@@ -93,7 +95,7 @@ describe('Test image processing', function () {
     it('Check if resize function throws an error upon sending a non-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, resize_1.default)('johncena.jpg', 300, 300, './src/assets/images').catch(function (error) {
+                case 0: return [4 /*yield*/, (0, resize_1.default)('johncena.jpg', 300, 300, path_1.default.join('./public/assets/images/')).catch(function (error) {
                         expect(error.code).toBe('ENOENT');
                     })];
                 case 1:
@@ -103,7 +105,36 @@ describe('Test image processing', function () {
         });
     }); });
 });
-describe('Test endpoint response', function () {
+describe('Test image processing function greyscale()', function () {
+    it('Check if greyscale() function is defined', function () {
+        expect(greyscale_1.default).toBeDefined();
+    });
+    it('Check if resize function returns a resized image upon sending a pre-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, greyscale_1.default)('fjord.jpg', 300, 300, path_1.default.join('./public/assets/images/'))];
+                case 1:
+                    response = _a.sent();
+                    expect(response).toBeInstanceOf(Buffer);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('Check if resize function throws an error upon sending a non-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, greyscale_1.default)('johncena.jpg', 300, 300, path_1.default.join('./public/assets/images/')).catch(function (error) {
+                        expect(error.code).toBe('ENOENT');
+                    })];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe('Test /api/view endpoint response', function () {
     it('#1 Test view endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
@@ -176,7 +207,7 @@ describe('Test endpoint response', function () {
             }
         });
     }); });
-    it('#7 Test view endpoint#2', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('#7 Test view endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -189,12 +220,72 @@ describe('Test endpoint response', function () {
         });
     }); });
 });
-describe('Test error handling', function () {
-    it('sending bad parameters', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe('Test /api/greyscale endpoint response', function () {
+    it('#1 Test greyscale endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?filename=encenadaport&width=70d0&height=800')];
+                case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=fjord')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('#2 Test greyscale endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=encenadaport&width=300&height=500')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('#3 Test greyscale endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=fjord&width=200&height=200')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('#4 Test greyscale endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=encenadaport&width=300&height=500')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('#5 Test greyscale endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=encenadaport&width=700&height=800')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('#6 Test greyscale endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=encenadaport&width=70d0&height=800')];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(400);
@@ -202,11 +293,11 @@ describe('Test error handling', function () {
             }
         });
     }); });
-    it('requesting a non-existing image returns a 404 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('#7 Test greyscale endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?filename=johncena&width=300&height=400')];
+                case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=johncena&width=300&height=400')];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(404);
@@ -214,16 +305,82 @@ describe('Test error handling', function () {
             }
         });
     }); });
-    it('not sending a file name returns 400 error', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/view?width=300&height=400')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(400);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
+});
+describe('Test error handling', function () {
+    describe('Test error handling for view endpoint', function () {
+        it('sending bad parameters returns 400 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get('/api/view?filename=encenadaport&width=70d0&height=800')];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it('requesting a non-existing image returns a 404 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get('/api/view?filename=johncena&width=300&height=400')];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(404);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it('not sending a file name returns 400 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get('/api/view?width=300&height=400')];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe('Test error handling for greyscale endpoint', function () {
+        it('sending bad parameters returns 400 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=encenadaport&width=70d0&height=800')];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it('requesting a non-existing image returns a 404 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get('/api/greyscale?filename=johncena&width=300&height=400')];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(404);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it('not sending a file name returns 400 error', function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, request.get('/api/greyscale?width=300&height=400')];
+                    case 1:
+                        response = _a.sent();
+                        expect(response.status).toBe(400);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    });
 });

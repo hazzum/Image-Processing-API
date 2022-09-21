@@ -1,5 +1,5 @@
 import express from 'express'
-import resize from './utilities/resize'
+import resize from './utilities/greyscale'
 import makeDir from '../commonUtils/makeDir'
 import saveEditedImage from '../commonUtils/saveEditedImage'
 import checkIfExists from '../commonUtils/checkIfExists'
@@ -11,15 +11,15 @@ const dimensionSchema: Joi.ObjectSchema = Joi.object({
   width: Joi.string().regex(/^[0-9]+$/),
   height: Joi.string().regex(/^[0-9]+$/)
 })
-const thumbnailDir: string = path.join('./public/assets/images/thumbnails/')
+const outputDirectory: string = path.join('./public/assets/images/greyscale/')
 const imageDir: string = path.join('./public/assets/images/')
 const options = {
-  root: thumbnailDir
+  root: outputDirectory
 }
 
-const view = express.Router()
+const greyscale = express.Router()
 
-view.get('/', async (req: express.Request, res: express.Response): Promise<void> => {
+greyscale.get('/', async (req: express.Request, res: express.Response): Promise<void> => {
   //validate inputs
   if (!req.query.filename) {
     res.status(400).send('Error 400: no filename was sent')
@@ -34,22 +34,22 @@ view.get('/', async (req: express.Request, res: express.Response): Promise<void>
   }
   //define parameters
   const imageName: string = req.query.filename + '.jpg'
-  const thumbnailName: string = req.query.filename + '_' + width + '_' + height + '.jpg'
+  const outputFileName: string = req.query.filename + '_' + width + '_' + height + '.jpg'
   //check if file exists
   const exists = await checkIfExists(imageDir, imageName)
   if (!exists) {
     res.status(404).send('Error 404: image does not exist on the server')
     return
   }
-  //make thumbnail directory if it doesn't already exist
-  await makeDir(thumbnailDir).catch(() => {
+  //make output directory for edited images if it doesn't already exist
+  await makeDir(outputDirectory).catch(() => {
     res.status(500).send('Error 500: internal server error')
     return
   })
   //load list of existing file names in the directory and check if the required file already exists
-  const thumbnailNames = await fs.readdir(thumbnailDir)
-  if (thumbnailNames.includes(thumbnailName)) {
-    res.sendFile(thumbnailName, options)
+  const outputNames = await fs.readdir(outputDirectory)
+  if (outputNames.includes(outputFileName)) {
+    res.sendFile(outputFileName, options)
     return
   } else {
     //resize image and save it to a buffer
@@ -59,14 +59,14 @@ view.get('/', async (req: express.Request, res: express.Response): Promise<void>
         return Buffer.alloc(0)
       }
     )
-    //save the thumbnail
-    await saveEditedImage(thumbnailDir, thumbnailName, output).catch(() => {
-      res.status(500).send('Error 500: could not save thumbnail')
+    //save the greyscale image
+    await saveEditedImage(outputDirectory, outputFileName, output).catch(() => {
+      res.status(500).send('Error 500: could not save the greyscale image')
       return
     })
-    res.sendFile(thumbnailName, options)
+    res.sendFile(outputFileName, options)
     return
   }
 })
 
-export default view
+export default greyscale

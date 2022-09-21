@@ -9,7 +9,7 @@ const app: express.Application = express()
 
 // HTTP request logger middleware
 app.use('/api', morgan('short'), routes)
-app.use('/assets', express.static(path.join(__dirname, 'assets')))
+app.use('/assets', express.static(path.join(__dirname, 'public')))
 
 // start express server
 app.listen(PORT)
