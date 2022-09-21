@@ -23,6 +23,10 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
+    "express": "^4.17.1",
+    "jasmine": "^3.10.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "supertest": "^6.1.6",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -33,13 +37,9 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "jasmine": "^3.10.0",
-    "jasmine-spec-reporter": "^7.0.0",
     "joi": "^17.6.0",
     "morgan": "^1.10.0",
     "sharp": "^0.31.0",
-    "supertest": "^6.1.6",
     "yarn": "^1.22.19"
   },
   "description": ""
