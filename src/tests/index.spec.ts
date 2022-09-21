@@ -46,9 +46,11 @@ describe('Test image processing function greyscale()', () => {
     expect(response).toBeInstanceOf(Buffer)
   })
   it('Check if resize function throws an error upon sending a non-existent image', async () => {
-    await greyscale('johncena.jpg', 300, 300, path.join('./public/assets/images/')).catch((error) => {
-      expect(error.code).toBe('ENOENT')
-    })
+    await greyscale('johncena.jpg', 300, 300, path.join('./public/assets/images/')).catch(
+      (error) => {
+        expect(error.code).toBe('ENOENT')
+      }
+    )
   })
 })
 
@@ -128,34 +130,34 @@ describe('Test error handling', () => {
       const response = await request.get('/api/view?filename=encenadaport&width=70d0&height=800')
       expect(response.status).toBe(400)
     })
-  
+
     it('requesting a non-existing image returns a 404 error', async () => {
       const response = await request.get('/api/view?filename=johncena&width=300&height=400')
       expect(response.status).toBe(404)
     })
-  
+
     it('not sending a file name returns 400 error', async () => {
       const response = await request.get('/api/view?width=300&height=400')
       expect(response.status).toBe(400)
     })
-    
   })
 
   describe('Test error handling for greyscale endpoint', () => {
     it('sending bad parameters returns 400 error', async () => {
-      const response = await request.get('/api/greyscale?filename=encenadaport&width=70d0&height=800')
+      const response = await request.get(
+        '/api/greyscale?filename=encenadaport&width=70d0&height=800'
+      )
       expect(response.status).toBe(400)
     })
-  
+
     it('requesting a non-existing image returns a 404 error', async () => {
       const response = await request.get('/api/greyscale?filename=johncena&width=300&height=400')
       expect(response.status).toBe(404)
     })
-  
+
     it('not sending a file name returns 400 error', async () => {
       const response = await request.get('/api/greyscale?width=300&height=400')
       expect(response.status).toBe(400)
     })
-    
   })
 })
