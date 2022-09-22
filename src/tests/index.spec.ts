@@ -27,13 +27,14 @@ describe('Test image processing function resize()', () => {
     expect(resize).toBeDefined()
   })
   it('Check if resize function returns a resized image upon sending a pre-existent image', async () => {
-    const response = await resize('fjord.jpg', 300, 300, path.join('./public/assets/images/'))
-    expect(response).toBeInstanceOf(Buffer)
+    await expectAsync(
+      resize('fjord.jpg', 300, 300, path.join('./public/assets/images/'))
+    ).toBeResolved()
   })
   it('Check if resize function throws an error upon sending a non-existent image', async () => {
-    await resize('johncena.jpg', 300, 300, path.join('./public/assets/images/')).catch((error) => {
-      expect(error.code).toBe('ENOENT')
-    })
+    await expectAsync(
+      resize('johncena.jpg', 300, 300, path.join('./public/assets/images/'))
+    ).toBeRejected()
   })
 })
 
@@ -41,16 +42,15 @@ describe('Test image processing function greyscale()', () => {
   it('Check if greyscale() function is defined', () => {
     expect(greyscale).toBeDefined()
   })
-  it('Check if resize function returns a resized image upon sending a pre-existent image', async () => {
-    const response = await greyscale('fjord.jpg', 300, 300, path.join('./public/assets/images/'))
-    expect(response).toBeInstanceOf(Buffer)
+  it('Check if greyscale function returns a greyscale image upon sending a pre-existent image', async () => {
+    await expectAsync(
+      greyscale('fjord.jpg', 300, 300, path.join('./public/assets/images/'))
+    ).toBeResolved()
   })
-  it('Check if resize function throws an error upon sending a non-existent image', async () => {
-    await greyscale('johncena.jpg', 300, 300, path.join('./public/assets/images/')).catch(
-      (error) => {
-        expect(error.code).toBe('ENOENT')
-      }
-    )
+  it('Check if greyscale function throws an error upon sending a non-existent image', async () => {
+    await expectAsync(
+      greyscale('johncena.jpg', 300, 300, path.join('./public/assets/images/'))
+    ).toBeRejected()
   })
 })
 

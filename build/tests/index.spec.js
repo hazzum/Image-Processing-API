@@ -81,13 +81,11 @@ describe('Test image processing function resize()', function () {
         expect(resize_1.default).toBeDefined();
     });
     it('Check if resize function returns a resized image upon sending a pre-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, resize_1.default)('fjord.jpg', 300, 300, path_1.default.join('./public/assets/images/'))];
+                case 0: return [4 /*yield*/, expectAsync((0, resize_1.default)('fjord.jpg', 300, 300, path_1.default.join('./public/assets/images/'))).toBeResolved()];
                 case 1:
-                    response = _a.sent();
-                    expect(response).toBeInstanceOf(Buffer);
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
@@ -95,9 +93,7 @@ describe('Test image processing function resize()', function () {
     it('Check if resize function throws an error upon sending a non-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, resize_1.default)('johncena.jpg', 300, 300, path_1.default.join('./public/assets/images/')).catch(function (error) {
-                        expect(error.code).toBe('ENOENT');
-                    })];
+                case 0: return [4 /*yield*/, expectAsync((0, resize_1.default)('johncena.jpg', 300, 300, path_1.default.join('./public/assets/images/'))).toBeRejected()];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -109,24 +105,20 @@ describe('Test image processing function greyscale()', function () {
     it('Check if greyscale() function is defined', function () {
         expect(greyscale_1.default).toBeDefined();
     });
-    it('Check if resize function returns a resized image upon sending a pre-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
+    it('Check if greyscale function returns a greyscale image upon sending a pre-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, greyscale_1.default)('fjord.jpg', 300, 300, path_1.default.join('./public/assets/images/'))];
+                case 0: return [4 /*yield*/, expectAsync((0, greyscale_1.default)('fjord.jpg', 300, 300, path_1.default.join('./public/assets/images/'))).toBeResolved()];
                 case 1:
-                    response = _a.sent();
-                    expect(response).toBeInstanceOf(Buffer);
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    it('Check if resize function throws an error upon sending a non-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('Check if greyscale function throws an error upon sending a non-existent image', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, greyscale_1.default)('johncena.jpg', 300, 300, path_1.default.join('./public/assets/images/')).catch(function (error) {
-                        expect(error.code).toBe('ENOENT');
-                    })];
+                case 0: return [4 /*yield*/, expectAsync((0, greyscale_1.default)('johncena.jpg', 300, 300, path_1.default.join('./public/assets/images/'))).toBeRejected()];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
